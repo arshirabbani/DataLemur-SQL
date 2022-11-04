@@ -1,4 +1,4 @@
--- clients with completed trades --
+-- clients with completed trades -- 
 
 SELECT
     u.city,
