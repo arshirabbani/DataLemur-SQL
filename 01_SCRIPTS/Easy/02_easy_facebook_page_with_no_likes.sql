@@ -1,10 +1,15 @@
 -- facebook page with no likes --
 
-SELECT
-    p.page_id
-FROM
-    pages as p
-    LEFT JOIN page_likes AS pl
-    ON p.page_id = pl.page_id
-WHERE
-    pl.page_id IS NULL;
+select 
+  page_id 
+from 
+  pages 
+where 
+  page_id not in (
+    select 
+      page_id 
+    from 
+      page_likes
+  ) 
+order by 
+  page_id asc
