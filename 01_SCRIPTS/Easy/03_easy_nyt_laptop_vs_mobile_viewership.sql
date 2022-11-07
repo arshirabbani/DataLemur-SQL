@@ -1,15 +1,12 @@
 -- laptop vs. mobile viewership --
 
-SELECT
-    SUM(
-        CASE
-            WHEN device_type = 'laptop' THEN 1 ELSE 0
-        END
-    ) AS laptop_views,
-    SUM(
-        CASE
-        WHEN device_type IN ('tablet', 'phone') THEN 1 ELSE 0
-        END
-    ) AS mobile_views
-FROM
-    viewership;
+SELECT 
+  sum(
+    case when device_type = 'laptop' then 1 else 0 end
+  ) as laptop_views, 
+  sum(
+    case when device_type in('phone', 'tablet') then 1 else 0 end
+  ) as mobile_views 
+FROM 
+  viewership
+
