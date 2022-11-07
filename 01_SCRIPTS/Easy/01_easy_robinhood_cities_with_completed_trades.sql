@@ -1,16 +1,16 @@
--- clients with completed trades -- 
+-- cities with completed trades -- 
 
-SELECT
-    u.city,
-    COUNT(t.order_id) AS total_orders
-FROM
-    trades AS t 
-    INNER JOIN users AS u
-    ON t.user_id = u.user_id
-WHERE
-    t.status = 'Completed'
-GROUP BY
-    u.city
-ORDER BY
-    total_orders DESC
-LIMIT 3;
+select 
+  u.city, 
+  count(order_id) as total_orders 
+from 
+  trades t 
+  inner join users u on t.user_id = u.user_id 
+where 
+  t.status = 'Completed' 
+group by 
+  city 
+order by 
+  total_orders desc 
+limit 
+  3;
