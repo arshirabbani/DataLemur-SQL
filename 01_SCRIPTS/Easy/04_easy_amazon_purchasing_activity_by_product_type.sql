@@ -14,3 +14,4 @@ SELECT
     ) AS cum_purchased
 FROM
     total_trans AS t1;
+    
