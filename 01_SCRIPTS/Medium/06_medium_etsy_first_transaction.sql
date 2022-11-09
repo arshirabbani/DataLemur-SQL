@@ -16,4 +16,4 @@ SELECT
 FROM
     transaction_ranking
 WHERE
-    transaction_num = 1 AND spend >= 50;
+    transaction_num = 1 AND spend >= 50; 
