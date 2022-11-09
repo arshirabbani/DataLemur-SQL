@@ -12,4 +12,4 @@ GROUP BY
     sender_id
 ORDER BY
     message_count DESC
-LIMIT 2;
+LIMIT 2; 
