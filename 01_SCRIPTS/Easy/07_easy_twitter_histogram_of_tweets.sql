@@ -1,23 +1,23 @@
 -- histogram of tweets --
 
-WITH tweet_counts AS
-(
-    SELECT
-        COUNT(tweet_id) AS tweet_count
-    FROM
-        tweets
-    WHERE
-        DATE_PART('year', tweet_date) = 2022
-    GROUP BY
-        user_id
-)
+with cte as (
+  select 
+    user_id, 
+    count(1) as tweet_bucket 
+  from 
+    tweets 
+  where 
+    date_part('year', tweet_date) = 2022 
+  group by 
+    user_id
+) 
+select 
+  tweet_bucket, 
+  count (1) as user_count 
+from 
+  cte 
+group by 
+  tweet_bucket 
+order by 
+  tweet_bucket asc
 
-SELECT
-    COUNT(tweet_count) AS tweet_bucket,
-    tweet_count AS user_num
-FROM
-    tweet_counts
-GROUP BY
-    tweet_count
-ORDER BY
-    tweet_bucket ASC;
