@@ -1,20 +1,4 @@
--- sending vs. operning snaps --
-
-WITH age_group_activities AS
-(
-    SELECT
-        a.activity_type,
-        a.time_spent,
-        ab.age_bucket
-    FROM
-        activities AS a
-        INNER JOIN age_breakdown AS ab
-        ON a.user_id = ab.user_id
-    WHERE
-        a.activity_type IN ('send', 'open')
-),
-
-open_send_sums AS
+WITH sms_count AS
 (
     SELECT
         age_bucket,
@@ -22,7 +6,11 @@ open_send_sums AS
         SUM(CASE WHEN activity_type = 'send' THEN time_spent ELSE 0 END) AS send_sum,
         SUM(time_spent) AS total_sum
     FROM
-        age_group_activities
+       activities AS a
+        INNER JOIN age_breakdown AS ab
+        ON a.user_id = ab.user_id
+    WHERE
+        a.activity_type IN ('send', 'open')
     GROUP BY
         age_bucket
 )
@@ -32,4 +20,4 @@ SELECT
     ROUND((send_sum / total_sum) * 100, 2) AS send_perc,
     ROUND((open_sum / total_sum) * 100, 2) AS open_perc
 FROM
-    open_send_sums;
+     sms_count;
