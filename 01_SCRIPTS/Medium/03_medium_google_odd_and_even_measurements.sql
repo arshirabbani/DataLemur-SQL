@@ -5,7 +5,6 @@ WITH odd_even_measurements AS
     SELECT
         measurement_id,
         measurement_value,
-        measurement_time,
         DATE(measurement_time) AS measurement_day,
         DENSE_RANK() OVER(PARTITION BY DATE(measurement_time) ORDER BY measurement_time ASC) AS measurment_number
     FROM
