@@ -1,8 +1,7 @@
 -- tesla unfinished parts --
 
-SELECT DISTINCT
-    part
-FROM
-    parts_assembly
-WHERE
-    finish_date IS NULL;
+SELECT 
+distinct part,
+assembly_step
+FROM parts_assembly
+where finish_date is null
