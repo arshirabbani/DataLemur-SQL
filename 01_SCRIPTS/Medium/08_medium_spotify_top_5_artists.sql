@@ -33,4 +33,4 @@ SELECT
 FROM
     artist_ranking
 WHERE
-    artist_rank <= 5;
+    artist_rank <= 5; 
