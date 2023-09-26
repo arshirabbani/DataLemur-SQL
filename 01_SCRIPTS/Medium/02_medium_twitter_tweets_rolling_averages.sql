@@ -1,18 +1,3 @@
--- tweets rolling average --
-
-WITH tweet_posts AS
-(
-    SELECT
-        user_id,
-        tweet_date,
-        COUNT(tweet_id) AS tweet_count
-    FROM
-        tweets
-    GROUP BY
-        user_id,
-        tweet_date
-)
-
 SELECT
     user_id,
     tweet_date,
@@ -21,4 +6,4 @@ SELECT
         2
     ) AS rolling_avg_3days
 FROM
-    tweet_posts;
+    tweets;
