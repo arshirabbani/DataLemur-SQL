@@ -1,23 +1,9 @@
--- duplicate job listings --
-
-WITH duplicated_listings AS
-(
-    SELECT
-        company_id,
-        title,
-        description,
-        COUNT(job_id) AS job_postings
-    FROM
-        job_listings
-    GROUP BY
-        company_id,
-        title,
-        description
-    HAVING
-        COUNT(job_id) > 1
-)
-
-SELECT
-    COUNT(DISTINCT company_id) AS duplicate_companies
-FROM
-    duplicated_listings;
+--Duplicate Job Listings--
+with cte as (
+select company_id,count(job_id) as job_count,
+title, description
+from job_listings job_listings 
+group by company_id,
+title, description)
+select count(distinct company_id) as duplicate_companies
+from cte where job_count>=2;
