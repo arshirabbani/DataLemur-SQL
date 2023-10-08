@@ -2,7 +2,7 @@
 
 with cte as (select user_id,
 transaction_date,
-count(1) as purchase_count,
+count(product_id) as purchase_count,
 dense_rank()over(partition by user_id order by transaction_date desc)
 as rn
 from user_transactions
