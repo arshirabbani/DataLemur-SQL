@@ -1,6 +1,5 @@
--- average deal size --
+--Average Deal Size--
 
-SELECT
-    ROUND(AVG(yearly_seat_cost * num_seats), 2) AS average_deal_size
-FROM
-    contracts;
+select 
+round(avg(num_seats * yearly_seat_cost),2) as average_deal_size
+from contracts
