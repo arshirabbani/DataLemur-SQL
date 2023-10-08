@@ -1,11 +1,7 @@
--- second day confirmation --
+--Second Day Confirmation-
 
-SELECT DISTINCT
-    e.user_id
-FROM
-    emails AS e
-    INNER JOIN texts AS t
-    ON e.email_id = t.email_id
-WHERE
-    t.signup_action = 'Confirmed' AND
-    DATE_PART('day', t.action_date - e.signup_date) = 1;
+select user_id
+from emails e
+inner join texts t on e.email_id = t.email_id
+where signup_action = 'Confirmed'
+and date_part('day', action_date - signup_date) = 1 
