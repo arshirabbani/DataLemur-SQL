@@ -1,21 +1,12 @@
--- third transaction by users --
+--User's Third Transaction--
 
-WITH transactions_rank AS
-(
-    SELECT
-        user_id,
-        spend,
-        transaction_date,
-        DENSE_RANK() OVER (PARTITION BY user_id ORDER BY transaction_date ASC) AS ranking
-    FROM
-        transactions
-)
-
-SELECT
-    user_id,
-    spend,
-    transaction_date
-FROM
-    transactions_rank
-WHERE
-    ranking = 3;
+with cte as (select user_id,
+spend,
+transaction_date,
+DENSE_RANK()OVER(PARTITION BY user_id order by transaction_date asc) as rn
+from transactions)
+select 
+user_id,
+spend,
+transaction_date
+from cte where rn = 3
