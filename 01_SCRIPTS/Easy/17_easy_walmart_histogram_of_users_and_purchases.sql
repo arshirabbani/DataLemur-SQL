@@ -1,25 +1,13 @@
--- histogram of users and purchases --
+--Histogram of Users and Purchases--
 
-WITH latest_transactions AS
-(
-    SELECT
-        transaction_date,
-        user_id,
-        product_id,
-        DENSE_RANK() OVER (PARTITION BY user_id ORDER BY transaction_date DESC) AS latest_purchase
-    FROM 
-        user_transactions
-)
-
-SELECT
-    transaction_date,
-    COUNT(DISTINCT user_id) AS number_of_users,
-    SUM(latest_purchase) AS number_of_products
-FROM
-    latest_transactions
-WHERE
-    latest_purchase = 1
-GROUP BY
-    transaction_date
-ORDER BY
-    transaction_date;
+with cte as (select user_id,
+transaction_date,
+count(1) as purchase_count,
+dense_rank()over(partition by user_id order by transaction_date desc)
+as rn
+from user_transactions
+group by transaction_date, user_id)
+select  transaction_date,user_id,purchase_count
+from cte
+where rn =1
+ORDER BY transaction_date asc
