@@ -1,16 +1,13 @@
--- data science skills --
+--Data Science Skills--
 
-SELECT
-    candidate_id
-FROM
-    candidates
-GROUP BY
-    candidate_id
-HAVING
-    SUM(
-        (CASE WHEN skill = 'Python' THEN 1 ELSE 0 END) +
-        (CASE WHEN skill = 'Tableau' THEN 1 ELSE 0 END) +
-        (CASE WHEN skill = 'PostgreSQL' THEN 1 ELSE 0 END)
-    ) = 3
-ORDER BY
-    candidate_id ASC;
+with cte as (
+select candidate_id,
+sum(case when skill = 'Python' then 1
+when skill = 'Tableau' then 1
+when skill = 'PostgreSQL' then 1
+else 0 end ) as skill_count
+FROM candidates
+group by 
+candidate_id)
+select candidate_id from cte where skill_count =3
+order by candidate_id asc
