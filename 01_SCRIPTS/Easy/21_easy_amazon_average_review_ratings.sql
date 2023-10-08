@@ -1,14 +1,8 @@
--- average review ratings --
+--Average Review Ratings--
 
-SELECT
-    DATE_PART('month', submit_date) AS mth,
-    product_id AS product,
-    ROUND(AVG(stars), 2) AS avg_stars
-FROM
-    reviews
-GROUP BY
-    DATE_PART('month', submit_date),
-    product_id
-ORDER BY
-    mth ASC,
-    product ASC;
+select date_part('month', submit_date) as month_num,
+product_id,
+round(avg(stars),2) as avg_stars
+from reviews
+group by date_part('month', submit_date), product_id
+order by month_num, product_id
