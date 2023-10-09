@@ -1,13 +1,10 @@
--- active user retention --
+--Active User Retention--
 
-SELECT
-    DATE_PART('month', event_date) AS month,
-    COUNT(DISTINCT user_id) AS monthly_active_users
-FROM
-    user_actions
-WHERE
-    user_id IN (SELECT DISTINCT user_id FROM user_actions WHERE DATE_PART('month', event_date) = 6) AND
-    DATE_PART('month', event_date) = 7 AND
-    event_type IN ('sign-in', 'like', 'comment')
-GROUP BY
-    DATE_PART('month', event_date);
+select date_part('month', event_date),
+count(distinct user_id) as monthly_user
+FROM user_actions 
+where date_part('year', event_date) = 2022
+and date_part('month', event_date) = 7
+and event_type in ('sign-in','like','comment')
+and user_id in (select distinct user_id from user_actions where date_part('month', event_date) = 6)
+group by date_part('month', event_date)
