@@ -1,21 +1,12 @@
--- odd and even measurements --
+--Odd and Even Measurements--
 
-WITH odd_even_measurements AS
-(
-    SELECT
-        measurement_id,
-        measurement_value,
-        DATE(measurement_time) AS measurement_day,
-        DENSE_RANK() OVER(PARTITION BY DATE(measurement_time) ORDER BY measurement_time ASC) AS measurment_number
-    FROM
-        measurements
-)
-
-SELECT
-    measurement_day,
-    SUM(CASE WHEN measurment_number IN (1, 3, 5) THEN measurement_value ELSE 0 END) AS odd_sum,
-    SUM(CASE WHEN measurment_number IN (2, 4, 6) THEN measurement_value ELSE 0 END) AS even_sum
-FROM
-    odd_even_measurements
-GROUP BY
-    measurement_day;
+with cte as (SELECT 
+date(measurement_time) as measurement_day,
+measurement_value,measurement_time,
+row_number()over(PARTITION BY date(measurement_time) order by measurement_time) as rn
+FROM measurements)
+select measurement_day,
+sum(case when rn%2=1 then measurement_value else 0 end) as add_sum,
+sum(case when rn%2=0 then measurement_value else 0 end) as even_sum
+from cte
+group by measurement_day
