@@ -1,16 +1,8 @@
--- app clickthrough rate ctr --
+--App Click-through Rate--
 
-SELECT
-    app_id,
-    ROUND(
-        100 *
-        SUM(CASE WHEN event_type = 'click' THEN 1.0 ELSE 0.0 END) /
-        SUM(CASE WHEN event_type = 'impression' THEN 1.0 ELSE 0.0 END),
-        2
-    ) AS ctr
-FROM
-    events
-WHERE
-    DATE_PART('year', timestamp) = 2022
-GROUP BY
-    app_id;
+SELECT app_id,
+round((sum(case when event_type = 'click' then 1.0 else 0.0 end)/
+sum(case when event_type = 'impression' then 1.0 else 0.0 end))*100,2) as CTR
+FROM events
+where date_part('year', timestamp) = 2022
+group by app_id
