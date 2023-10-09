@@ -1,23 +1,12 @@
-WITH sms_count AS
-(
-    SELECT
-        age_bucket,
-        SUM(CASE WHEN activity_type = 'open' THEN time_spent ELSE 0 END) AS open_sum,
-        SUM(CASE WHEN activity_type = 'send' THEN time_spent ELSE 0 END) AS send_sum,
-        SUM(time_spent) AS total_sum
-    FROM
-       activities AS a
-        INNER JOIN age_breakdown AS ab
-        ON a.user_id = ab.user_id
-    WHERE
-        a.activity_type IN ('send', 'open')
-    GROUP BY
-        age_bucket
-)
+--Sending vs. Opening Snap--
 
-SELECT
-    age_bucket,
-    ROUND((send_sum / total_sum) * 100, 2) AS send_perc,
-    ROUND((open_sum / total_sum) * 100, 2) AS open_perc
-FROM
-     sms_count;
+with cte as (select age_bucket,
+case when activity_type = 'send' then time_spent else 0 end send_time,
+case when activity_type = 'open' then time_spent else 0 end open_time
+from activities a
+inner join age_breakdown ab on a.user_id = ab.user_id)
+select age_bucket,
+round(100.0*sum(send_time)/(sum(send_time)+sum(open_time)),2) as send_perc,
+round(100.0*sum(open_time)/(sum(send_time)+sum(open_time)),2) as open_perc
+from cte
+GROUP BY age_bucket
