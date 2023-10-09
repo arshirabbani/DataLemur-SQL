@@ -1,36 +1,11 @@
--- highest grossing items --
+--Highest-Grossing Items--
 
-WITH top_sales AS
-(
-    SELECT
-        category,
-        product,
-        SUM(spend) AS total_spend
-    FROM
-        product_spend
-    WHERE
-        DATE_PART('year', transaction_date) = 2022
-    GROUP BY
-        category,
-        product
-),
-
-top_sales_ranking AS
-(
-    SELECT
-        category,
-        product,
-        total_spend,
-        DENSE_RANK() OVER(PARTITION BY category ORDER BY total_spend DESC) AS product_rank
-    FROM
-        top_sales
-)
-
-SELECT
-    category,
-    product,
-    total_spend
-FROM
-    top_sales_ranking
-WHERE
-    product_rank <= 2;
+with cte as (select category,product,
+sum(spend) as total_spend ,
+dense_rank()over(partition by category order by sum(spend) desc) as rn
+from product_spend
+where date_part('year', transaction_date) = 2022
+group by category,product)
+select category,product,total_spend
+from cte where rn<=2
+order by category,total_spend desc
