@@ -1,36 +1,13 @@
--- top 5 artists --
+--Top 5 Artists--
 
-WITH artist_top10_appearance AS
-(
-    SELECT
-        a.artist_name,
-        COUNT(a.artist_name) AS appearance
-    FROM
-        global_song_rank AS gsr
-        INNER JOIN songs AS s
-        ON gsr.song_id = s.song_id
-        INNER JOIN artists AS a
-        ON s.artist_id = a.artist_id
-    WHERE
-        gsr.rank <= 10
-    GROUP BY
-        a.artist_name
-),
-
-artist_ranking AS
-(
-    SELECT
-        artist_name,
-        appearance,
-        DENSE_RANK() OVER(ORDER BY appearance DESC) AS artist_rank
-    FROM
-        artist_top10_appearance
-)
-
-SELECT
-    artist_name,
-    artist_rank
-FROM
-    artist_ranking
-WHERE
-    artist_rank <= 5; 
+with cte as (select artist_name, 
+count(gsr.song_id) as song_cnt,
+dense_rank() OVER(order by count(gsr.song_id) desc) as artist_rank
+from global_song_rank gsr
+inner join songs as s on gsr.song_id = s.song_id
+inner join artists as a on s.artist_id = a.artist_id
+where rank <= 10
+group by artist_name
+ORDER BY song_cnt desc)
+select artist_name, artist_rank
+from cte where artist_rank <=5
