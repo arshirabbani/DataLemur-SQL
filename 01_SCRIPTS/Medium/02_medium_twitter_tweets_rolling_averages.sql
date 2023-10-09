@@ -1,3 +1,5 @@
+--Tweets' Rolling Averages--
+
 SELECT
     user_id,
     tweet_date,
