@@ -12,7 +12,6 @@
 
 
 ## Overview
-[(Back to top)](#table-of-contents)
 
 This repository provides the  solution for the SQL challenges hosted on [DataLemur](https://datalemur.com/) website.
 
